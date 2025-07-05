@@ -1,9 +1,6 @@
-// sidebars.ts
 export default {
   tutorialSidebar: [
-    {
-      type: 'doc',
-      id: 'demo-math',   // keep your test page for now
-    },
+    { type: 'doc', id: 'demo-math', label: 'Math demo' },
   ],
 };
+
