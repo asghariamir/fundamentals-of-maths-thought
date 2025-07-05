@@ -8,7 +8,7 @@ import rehypeKatex from 'rehype-katex';
 
 const config: Config = {
   title: 'Fundamentals of Maths Thought',
-  tagline: 'Dinosaurs are cool',
+  tagline: 'See mathematics, speak its language, and settle its truths',
   favicon: 'img/favicon.ico',
 
   future: {v4: true},
@@ -38,7 +38,7 @@ const config: Config = {
             'https://github.com/asghariamir/fundamentals-of-maths-thought/edit/main/',
         },
         blog: {
-          showReadingTime: true,
+          showReadingTime: false,
           feedOptions: {type: ['rss', 'atom'], xslt: true},
           editUrl:
             'https://github.com/asghariamir/fundamentals-of-maths-thought/edit/main/',
@@ -63,11 +63,10 @@ const config: Config = {
   themeConfig: {
     image: 'img/docusaurus-social-card.jpg',
     navbar: {
-      title: 'My Site',
-      logo: {alt: 'Site Logo', src: 'img/logo.svg'},
+      title: 'Fundamentals of Maths Thought',
+      logo: {alt: 'FOMT Logo', src: 'img/logo.svg'},
       items: [
-        {type: 'docSidebar', sidebarId: 'tutorialSidebar', label: 'Tutorial', position: 'left'},
-        {to: '/blog', label: 'Blog', position: 'left'},
+        {type: 'docSidebar', sidebarId: 'demo-math', label: 'Book', position: 'left'},
         {href: 'https://github.com/asghariamir/fundamentals-of-maths-thought', label: 'GitHub', position: 'right'},
       ],
     },
