@@ -72,18 +72,21 @@ const config: Config = {
       links: [
         {
           title: 'Docs',
-          items: [{label: 'Math demo', to: '/docs/demo-math'}],
+          items: [
+            { label: 'Math demo', to: '/docs/demo-math' },
+          ],
         },
         {
-          title: 'Community',
+          title: 'links',               // renamed column
           items: [
-            {label: 'Stack Overflow', href: 'https://stackoverflow.com/questions/tagged/docusaurus'},
-            {label: 'Discord', href: 'https://discordapp.com/invite/docusaurus'},
+            { label: 'Website', href: 'https://amirasghari.com' },
+            { label: 'Contact me', href: 'mailto:asghari.amir@gmail.com' },
           ],
         },
       ],
       copyright: `Copyright © ${new Date().getFullYear()} asghariamir.`,
     },
+    
 
     prism: {
       theme: prismThemes.github,
