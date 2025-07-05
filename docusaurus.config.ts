@@ -63,13 +63,17 @@ const config: Config = {
   themeConfig: {
     image: 'img/docusaurus-social-card.jpg',
     navbar: {
-      title: 'Fundamentals of Maths Thought',
-      logo: {alt: 'FOMT Logo', src: 'img/logo.svg'},
       items: [
-        {type: 'docSidebar', sidebarId: 'demo-math', label: 'Book', position: 'left'},
-        {href: 'https://github.com/asghariamir/fundamentals-of-maths-thought', label: 'GitHub', position: 'right'},
+        {
+          type: 'docSidebar',
+          sidebarId: 'tutorialSidebar',   // must match
+          label: 'Book',
+          position: 'left',
+        },
+        { href: 'https://github.com/asghariamir/fundamentals-of-maths-thought', label: 'GitHub', position: 'right' },
       ],
     },
+    
     footer: {
       style: 'dark',
       links: [
