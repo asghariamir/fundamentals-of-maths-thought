@@ -5,20 +5,74 @@ sidebar_label: "Chapter 0 — See it → Say it → Settle it"
 description: An opening primer on observation, expression, and proof.
 ---
 
-import useBaseUrl from '@docusaurus/useBaseUrl';
-
-
-
-## Tasks   <!-- optional section -->
-
-1. Observe a familiar pattern and describe it in plain words.  
-2. Translate your description into symbolic form.  
-3. Formulate a statement you can try to prove.
+> *See it, say it, settle it.*
 
 ---
 
-<!-- 🔽  put the interactive widget LAST -->
+## 1&nbsp;· Seeing 👀
 
+What do you **see** in each figure below?  Write it down.
+
+![29-29-41 triangle](static/img/Chapter 0-fig 2.png)
+![3-4-5 triangle](static/img/Chapter 0-fig 1.png)
+
+Both triangles *look* right-angled, yet only the second one **is**.  
+Using the cosine formula we find  
+
+* angle(29-29-41) ≈ 89.97° (almost but **not** 90°)  
+* angle(3-4-5)   = 90°
+
+Our naked eyes can be fooled; mathematics helps us look more deeply.
+
+---
+
+## 2&nbsp;· Saying 🗣️
+
+Observation is not enough—we must **express** relationships precisely.
+
+### Two candidate statements
+
+1. **If** a triangle is right-angled **then**  
+   \(a^{2}+b^{2}=c^{2}\). <br/>
+   <span class="badge badge--secondary">Pythagoras’ Theorem</span>
+
+2. **If** \(a^{2}+b^{2}=c^{2}\) **then**  
+   the triangle is right-angled. <br/>
+   <span class="badge badge--secondary">Converse</span>
+
+Both are true, but they play different roles when we reason about
+triangles like 3-4-5 and 29-29-41.
+
+---
+
+## 3&nbsp;· Settling ✔️
+
+Seeing and saying still leave a question:
+
+> **How do we know** what we think we know?
+
+We *settle* by **proof**.
+
+### Example · Disproving a “right” triangle by contradiction
+
+Assume the 29-29-41 triangle were right-angled.  
+Pythagoras would then give \(29^{2}+29^{2}=41^{2}\),  
+i.e.\ \(1682=1681\) — impossible.  
+Hence the triangle is *not* right-angled.
+
+Proof frees us from unreliable measurements.
+
+---
+
+## 4&nbsp;· Tasks ✍️
+
+1. Observe a familiar pattern and describe it in everyday words.  
+2. Translate your description into algebraic symbols.  
+3. Formulate a statement you could try to prove.
+
+---
+
+<!-- 🔽 interactive widget LAST -->
 <iframe
   src={useBaseUrl('/if-then.html')}
   style={{ width: '100%', height: '420px', border: 'none' }}
