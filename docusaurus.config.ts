@@ -51,14 +51,14 @@ const config: Config = {
     image: 'img/docusaurus-social-card.jpg',
     navbar: {
       title: 'FOMT',
-      logo: {alt: 'FOMT logo', src: 'img/logo.svg'},
+      logo: { alt: 'FOMT logo', src: 'img/logo.svg' },
       items: [
-        {
-          type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
-          label: 'Book',
-          position: 'left',
-        },
+        { type: 'docSidebar', sidebarId: 'tutorialSidebar', label: 'Book', position: 'left' },
+    +   { to: '/apps', label: 'Apps', position: 'left' },      // ← new tab
+        { href: 'https://github.com/asghariamir/fundamentals-of-maths-thought', label: 'GitHub', position: 'right' },
+      ],
+    },
+    
         {
           href: 'https://github.com/asghariamir/fundamentals-of-maths-thought',
           label: 'GitHub',
