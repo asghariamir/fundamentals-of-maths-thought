@@ -1,8 +1,10 @@
 export default {
   tutorialSidebar: [
+    { type: 'doc', id: 'preface'     },
     { type: 'doc', id: 'chapter-0' },
-    // other chapters will follow…
+    // future chapters here…
   ],
 };
+
 
 
