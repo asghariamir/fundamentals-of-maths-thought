@@ -73,7 +73,7 @@ const config: Config = {
         {
           title: 'Docs',
           items: [
-            { label: 'Math demo', to: '/docs/demo-math' },
+            { label: 'Preface', to: '/docs/preface' }
           ],
         },
         {
