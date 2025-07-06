@@ -51,13 +51,18 @@ const allTabs = [
 ];
 
 function Tabs() {
-  const [active, setActive] = useState<string>(window.location.hash || '#arithmetic');
+  const getHash = () =>
+    (typeof window !== 'undefined' && window.location.hash) || '#arithmetic';
+
+  const [active, setActive] = useState<string>(getHash());
 
   useEffect(() => {
-    const handler = () => setActive(window.location.hash || '#arithmetic');
+    if (typeof window === 'undefined') return;          // ✅ guard
+    const handler = () => setActive(getHash());
     window.addEventListener('hashchange', handler);
     return () => window.removeEventListener('hashchange', handler);
   }, []);
+
 
   return (
     <ul className="tabs">
