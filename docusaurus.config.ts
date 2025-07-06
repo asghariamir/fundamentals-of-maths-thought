@@ -54,10 +54,11 @@ const config: Config = {
       logo: { alt: 'FOMT logo', src: 'img/logo.svg' },
       items: [
         { type: 'docSidebar', sidebarId: 'tutorialSidebar', label: 'Book', position: 'left' },
-    +   { to: '/apps', label: 'Apps', position: 'left' },      // ← new tab
+        { to: '/apps', label: 'Apps', position: 'left' },   // ← Apps tab
         { href: 'https://github.com/asghariamir/fundamentals-of-maths-thought', label: 'GitHub', position: 'right' },
       ],
     },
+    
     
         {
           href: 'https://github.com/asghariamir/fundamentals-of-maths-thought',
