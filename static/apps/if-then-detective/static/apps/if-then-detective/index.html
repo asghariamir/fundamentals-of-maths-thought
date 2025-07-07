@@ -1,0 +1,661 @@
+<!DOCTYPE html>  
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>If-Then – Conditional Statements & Venn Diagrams</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --fail: #b71c1c;
+      --primary: #1565c0;
+      --good: #2e7d32;
+      --border: #d0d0d0;
+      --bg: #fafafa;
+      --card: #fff;
+    }
+       .tabrow { display: flex; gap: .5rem; justify-content: center; margin-bottom: 1rem; }
+    .tab { padding: .48em 1.1em; background: #f0f3fa; border-radius: 6px 6px 0 0; font-weight: 600; color: #333; cursor: pointer; border: 1px solid transparent; transition: .13s; }
+    .tab.active { background: #fff; color: var(--primary); border-color: #e3e3e3 #e3e3e3 #fff #e3e3e3; box-shadow: 0 2px 4px rgba(0,0,0,0.02);}
+    .tab:hover:not(.active){background:#e0e5ee;}
+
+    body { background: var(--bg); color: #222; display: flex; justify-content: center; padding: 1rem; }
+    .app { max-width: 670px; width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,.08); padding: 1.4rem 1.7rem; }
+    .intro-flex { display: flex; margin-bottom: 1.2em;}
+    .static-venn { min-width: 100px; display: flex; align-items: center; justify-content: center; margin-top: .6em; }
+    .static-venn svg { width: 200px; height: 200px; }
+    .intro-blurb { font-size: 1.08em; color: #233; margin-bottom: 0.13em; }
+    .intro-venn-label { font-size: .98em; color: #444; }
+    h1 { font-size: 1.3rem; color: var(--primary); font-weight: 700; margin-bottom: .14em; }
+    .tabrow { display: flex; gap: .5rem; justify-content: center; margin-bottom: 1rem; }
+    .tab { padding: .48em 1.1em; background: #f0f3fa; border-radius: 6px 6px 0 0; font-weight: 600; color: #333; cursor: pointer; border: 1px solid transparent; transition: .13s; }
+    .tab.active { background: #fff; color: var(--primary); border-color: #e3e3e3 #e3e3e3 #fff #e3e3e3; box-shadow: 0 2px 4px rgba(0,0,0,0.02);}
+    .tab:hover:not(.active){background:#e0e5ee;}
+    .statement-select-wrap { display: flex; justify-content: center; align-items: center; margin-bottom: 1.2em; }
+    .statement-select-label { font-weight: 600; margin-right: .7em; }
+    .statement-select {
+      min-width: 320px; font-size: 1.08em; padding: .4em .7em;
+      border-radius: 6px; border: 1.5px solid #d0d0d0; background: #f9faff; color: #234; outline: none;
+    }
+    .interactive-block {text-align: center; margin-bottom: 1.6em;}
+    .interactive-block h3 { font-size: 1.13rem; color: var(--primary); margin-bottom: .13em;}
+    .interactive-instruct { font-size: 1.03em; color: #444; margin-bottom: 1.2em; margin-top:.7em;}
+    .vennBox {
+      aspect-ratio: 1/1;
+      width: 330px;
+      height: 330px;
+      max-width: 96vw;
+      max-height: 96vw;
+      margin: 0 auto;
+      border: 1px solid #d0d0d0;
+      border-radius: 6px;
+      background: #fff;
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+    .vennBox.locked {cursor:default; filter: grayscale(.65) brightness(0.97);}
+    .fail-region{ cursor:pointer; opacity:0; pointer-events:all; transition: opacity 0.15s;}
+    .fail-region.visible{ opacity:1;}
+    .locked-feedback, .hover-feedback {
+      margin: 1.3em auto 1.2em auto;
+      background: #f7f7fb;
+      border-radius: 8px;
+      border: 1px solid #e0e0e0;
+      max-width: 430px;
+      padding: 1em 1em .7em 1em;
+      text-align: center;
+      font-size: 1.07em;
+      transition: background .33s;
+    }
+    .logic-form-label {color:var(--primary); font-weight:600; font-size:1.04em;}
+    .locked-statement {font-size: 1.06em; margin:.22em 0 .7em 0;}
+    .fail-general { color: var(--fail); font-weight: 500; }
+    .fail-context { margin-top: .2em; font-size: .97em; color: #3c3c3c; }
+    .truth-check { display:flex; justify-content:center; align-items:center; gap:1.6em; margin:2em 0 1em 0; font-size:1.13em;}
+    .truth-radio{accent-color:var(--primary);}
+    .truth-submit-btn {
+      margin-left:1.7em; padding:.5em 2em; border-radius:7px;
+      background:var(--primary); color:#fff; font-weight:600; font-size:1em;
+      border:none; box-shadow:0 1px 4px rgba(21,101,192,0.10); cursor:pointer; transition:.13s; outline:none;
+    }
+    .truth-submit-btn:disabled{background:#b3b3b3;cursor:not-allowed;}
+    .info-card{
+      border:1.5px solid #d0d0d0; border-radius:7px;
+      padding:1.15em 1.1em 1em 1.1em; background:#fcfcfc; margin-top:2rem;
+      font-size:1.07em; display:none; max-width:500px; margin-left:auto; margin-right:auto; text-align:center;
+      box-shadow:0 2px 8px rgba(21,101,192,0.06);
+    }
+    .info-card.visible{display:block;}
+    .msg-good{color:var(--good);font-weight:600;}
+    .msg-bad{color:var(--fail);font-weight:600;}
+    .msg-iff{font-weight:500;color:#234;margin-top:0.7em;}
+    .counter{font-family:monospace;font-size:.99em;}
+    .tryagain-btn{
+      margin-top:1.3em; padding:.48em 2em; border-radius:7px; background:var(--fail);
+      color:#fff; font-weight:600; font-size:1em; border:none;
+      box-shadow:0 1px 4px rgba(183,28,28,0.13); cursor:pointer; transition:.13s; outline:none;
+    }
+    .reminder{display:block;margin-top:.9em;font-size:.98em;color:var(--fail);}
+    .hidden{display:none;}
+    .vennBox svg .inner-animate {
+      transition: r 1.3s cubic-bezier(.79,1.7,.44,.99);
+    }
+    .vennBox svg .grow-fill {
+      fill: rgba(21,101,192,0.12);
+      transition: fill 0.22s;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <div class="intro-flex">
+      <div style="flex:1 1 0%">
+        <h1>If-Then</h1>
+        <div class="intro-blurb">
+          All sentences are of the form <b>“If P, then Q.”</b>
+          The diagram below shows: the <b>inner circle</b> is “if” (P), and the <b>outer circle</b> is “then” (Q).
+        </div>
+        <span class="intro-venn-label">Whenever P holds, Q holds too.</span>
+        <span class="static-venn" id="introVenn"></span>
+      </div>
+    </div>
+    <div class="tabrow" id="topicTabs"></div>
+    <div class="tabrow" id="logicTabs"></div>
+    <div class="statement-select-wrap">
+      <label for="statementSelect" class="statement-select-label">Choose a statement:</label>
+      <select id="statementSelect" class="statement-select"></select>
+    </div>
+    <div class="interactive-block">
+      <h3 id="dynTitle"></h3>
+      <div class="interactive-instruct">
+        Move your mouse over the interactive diagram to highlight the region where the implication fails (the counterexample).<br>
+        <span style="font-size:.97em;color:#3c3c3c;">Click the diagram to lock the region and see the full statement below.</span>
+      </div>
+      <div id="svgDyn" class="vennBox"></div>
+      <div id="hoverBox" class="hover-feedback hidden"></div>
+      <div id="lockedBox" class="locked-feedback hidden"></div>
+    </div>
+    <form id="truthCheck" class="truth-check hidden">
+      <label><input class="truth-radio" type="radio" name="truthval" value="true" disabled> This statement is <b>TRUE</b></label>
+      <label><input class="truth-radio" type="radio" name="truthval" value="false" disabled> This statement is <b>FALSE</b></label>
+      <button type="submit" class="truth-submit-btn" disabled>Submit</button>
+    </form>
+    <section class="info-card" id="infoCard">
+      <div id="infoFeedback"></div>
+      <span id="iffMsg" class="msg-iff"></span>
+      <div id="counterMsg" class="counter"></div>
+      <button type="button" class="tryagain-btn hidden" id="tryAgainBtn">Try Again</button>
+      <span class="reminder hidden" id="reminderMsg">
+        A conditional statement is <b>true</b> when every time <b>P</b> is true, <b>Q</b> is also true.<br>
+        If you can find a case where <b>P</b> is true and <b>Q</b> is false, the statement is <b>false</b>.
+      </span>
+    </section>
+  </main>
+<script>
+const DATA = [
+  {
+    topic: "Algebra",
+    statements: [
+      {
+        p: "x is even",
+        q: "x² is even",
+        forms: {
+          converse:       {truth: true},
+          inverse:        {truth: false, counter: "x = 9", failContext: "There is a number that is not even, but its square is not even."},
+          contrapositive: {truth: false, counter: "x = 9", failContext: "There is a number whose square is not even, but the number is even."}
+        }
+      },
+      {
+        p: "a is rational",
+        q: "a + 1 is rational",
+        forms: {
+          converse:       {truth: true},
+          inverse:        {truth: true},
+          contrapositive: {truth: true}
+        }
+      },
+      {
+        p: "x > 0",
+        q: "x² > 0",
+        forms: {
+          converse:       {truth: false, counter: "x = -3", failContext: "There is a number whose square is greater than 0, but the number is not greater than 0."},
+          inverse:        {truth: false, counter: "x = -3", failContext: "There is a number that is not greater than 0, but its square is not greater than 0."},
+          contrapositive: {truth: true}
+        }
+      }
+    ]
+  },
+  {
+    topic: "Geometry",
+    statements: [
+      {
+        p: "a figure is a square",
+        q: "it is a rectangle",
+        forms: {
+          converse:       {truth: false, counter: "a non‑square rectangle", failContext: "There is a rectangle that is not a square."},
+          inverse:        {truth: false, counter: "a non‑square rectangle", failContext: "There is a figure that is not a square, but it is not a rectangle."},
+          contrapositive: {truth: true}
+        }
+      },
+      {
+        p: "a triangle is equilateral",
+        q: "it is isosceles",
+        forms: {
+          converse:       {truth: false, counter: "an isosceles triangle that is not equilateral", failContext: "There is an isosceles triangle that is not equilateral."},
+          inverse:        {truth: false, counter: "an isosceles triangle that is not equilateral", failContext: "There is a triangle that is not equilateral, but it is not isosceles."},
+          contrapositive: {truth: true}
+        }
+      },
+      {
+        p: "an angle is right",
+        q: "it is 90 degrees",
+        forms: {
+          converse:       {truth: true},
+          inverse:        {truth: true},
+          contrapositive: {truth: true}
+        }
+      }
+    ]
+  },
+  {
+    topic: "Numbers",
+    statements: [
+      {
+        p: "n is divisible by 4",
+        q: "n is even",
+        forms: {
+          converse:       {truth: false, counter: "n = 2", failContext: "There is an even number that is not divisible by 4."},
+          inverse:        {truth: false, counter: "n = 2", failContext: "There is a number that is not divisible by 4, but it is not even."},
+          contrapositive: {truth: true}
+        }
+      },
+      {
+        p: "x is rational",
+        q: "-x is rational",
+        forms: {
+          converse:       {truth: true},
+          inverse:        {truth: true},
+          contrapositive: {truth: true}
+        }
+      },
+      {
+        p: "y is irrational",
+        q: "y + 1 is irrational",
+        forms: {
+          converse:       {truth: false, counter: "y = -1", failContext: "There is a number whose sum with 1 is irrational, but the number itself is not irrational."},
+          inverse:        {truth: false, counter: "y = -1", failContext: "There is a number that is not irrational, but its sum with 1 is not irrational."},
+          contrapositive: {truth: true}
+        }
+      }
+    ]
+  }
+];
+
+const LOGIC_FORMS = [
+  {id:"converse",label:"Converse",def:"If Q then P."},
+  {id:"inverse",label:"Inverse",def:"If not P then not Q."},
+  {id:"contrapositive",label:"Contrapositive",def:"If not Q then not P."}
+];
+const FAILURE_REGION = { converse: "QnotP", inverse: "QnotP", contrapositive: null };
+
+function englishNegate(s) {
+  let idx = s.indexOf(" is ");
+  if (idx >= 0) return s.slice(0, idx+4) + "not " + s.slice(idx+4);
+  idx = s.indexOf(" are ");
+  if (idx >= 0) return s.slice(0, idx+5) + "not " + s.slice(idx+5);
+  if (s.match(/=|≡/)) return "not ("+s+")";
+  return "not ("+s+")";
+}
+function makeIfThen(stmt, form) {
+  switch(form){
+    case 'converse': return `If ${stmt.q}, then ${stmt.p}.`;
+    case 'inverse': return `If ${englishNegate(stmt.p)}, then ${englishNegate(stmt.q)}.`;
+    case 'contrapositive': return `If ${englishNegate(stmt.q)}, then ${englishNegate(stmt.p)}.`;
+    default: return `If ${stmt.p}, then ${stmt.q}.`;
+  }
+}
+function makeIfAndOnlyIf(stmt) {
+  return `${stmt.p.charAt(0).toUpperCase()+stmt.p.slice(1)} if and only if ${stmt.q}.`;
+}
+function addFailPatternDef(svg){
+  if(!svg.querySelector('#failPattern')){
+    const defs = document.createElementNS(svg.namespaceURI,"defs");
+    defs.innerHTML = `<pattern id="failPattern" patternUnits="userSpaceOnUse" width="0.08" height="0.08" patternTransform="rotate(45)"><rect x="0" y="0" width="0.04" height="0.08" fill="rgba(183,28,28,0.22)"/></pattern>`;
+    svg.appendChild(defs);
+  }
+}
+
+// --- FIXED HOVER SHADING LOGIC ---
+// Only this function is changed!
+function buildInteractiveVenn(targetId, failRegion, locked, hoverActive, onHover, onLock, circlesCoincide) {
+  const wrap = document.getElementById(targetId);
+  wrap.innerHTML = '';
+  if (locked) wrap.classList.add('locked'); else wrap.classList.remove('locked');
+  const svgNS = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(svgNS, 'svg');
+  svg.setAttribute('viewBox', '-1 -1 2 2');
+  svg.setAttribute('width', '100%');
+  svg.setAttribute('height', '100%');
+  svg.style.width = '100%';
+  svg.style.height = '100%';
+
+  let RP = circlesCoincide ? 0.62 : 0.40, RQ = 0.62;
+  // Outer Q
+  let qCirc = document.createElementNS(svgNS, "circle");
+  qCirc.setAttribute("cx", 0); qCirc.setAttribute("cy", 0); qCirc.setAttribute("r", RQ);
+  qCirc.setAttribute("fill", "none");
+  qCirc.setAttribute("stroke", "#222");
+  qCirc.setAttribute("stroke-width", "0.04");
+  svg.appendChild(qCirc);
+  // Inner P
+  let pCirc = document.createElementNS(svgNS, "circle");
+  pCirc.setAttribute("cx", 0); pCirc.setAttribute("cy", 0); pCirc.setAttribute("r", RP);
+  pCirc.setAttribute("fill", "none");
+  pCirc.setAttribute("stroke", "#222");
+  pCirc.setAttribute("stroke-width", "0.04");
+  if (circlesCoincide) pCirc.classList.add("inner-animate");
+  svg.appendChild(pCirc);
+  // Labels
+  let textP = document.createElementNS(svgNS, "text");
+  textP.setAttribute("x", 0); textP.setAttribute("y", 0.04);
+  textP.setAttribute("fill", "#222"); textP.setAttribute("font-size", "0.18");
+  textP.setAttribute("font-weight", "700"); textP.setAttribute("text-anchor", "middle");
+  textP.textContent = "P"; svg.appendChild(textP);
+  let textQ = document.createElementNS(svgNS, "text");
+  textQ.setAttribute("x", 0); textQ.setAttribute("y", -RQ - 0.08);
+  textQ.setAttribute("fill", "#222"); textQ.setAttribute("font-size", "0.13");
+  textQ.setAttribute("font-weight", "700"); textQ.setAttribute("text-anchor", "middle");
+  textQ.textContent = "Q"; svg.appendChild(textQ);
+
+  if (failRegion && !circlesCoincide) {
+    addFailPatternDef(svg);
+    let g = document.createElementNS(svgNS, "g");
+    g.classList.add("fail-region");
+    if (locked || hoverActive) g.classList.add("visible");
+    let mask = document.createElementNS(svgNS, "mask");
+    mask.setAttribute("id", "failMaskQnotP");
+    mask.innerHTML = `<rect x="-1" y="-1" width="2" height="2" fill="white"/><circle cx="0" cy="0" r="0.40" fill="black"/>`;
+    svg.appendChild(mask);
+
+    let el = document.createElementNS(svgNS, "circle");
+    el.setAttribute("cx", 0); el.setAttribute("cy", 0); el.setAttribute("r", RQ);
+    el.setAttribute("fill", "url(#failPattern)");
+    el.setAttribute("mask", "url(#failMaskQnotP)");
+    g.appendChild(el);
+
+    svg.appendChild(g);
+
+    // Hit area for all mouse actions
+    let hit = document.createElementNS(svgNS, "rect");
+    hit.setAttribute("x", -1);
+    hit.setAttribute("y", -1);
+    hit.setAttribute("width", 2);
+    hit.setAttribute("height", 2);
+    hit.setAttribute("fill", "#fff");
+    hit.setAttribute("opacity", "0.01");
+    hit.style.cursor = "pointer";
+    if (!locked) {
+      let over = false;
+      svg.addEventListener("mousemove", function (evt) {
+        const rect = svg.getBoundingClientRect();
+        const x = ((evt.clientX - rect.left) / rect.width) * 2 - 1;
+        const y = ((evt.clientY - rect.top) / rect.height) * 2 - 1;
+        const r = Math.sqrt(x * x + y * y);
+        const inDonut = (r <= RQ && r >= RP);
+        if (inDonut && !over) {
+          over = true;
+          if (g) g.classList.add('visible');
+          onHover && onHover(true);
+        } else if (!inDonut && over) {
+          over = false;
+          if (g) g.classList.remove('visible');
+          onHover && onHover(false);
+        }
+      });
+      svg.addEventListener("mouseleave", function () {
+        if (over) {
+          over = false;
+          if (g) g.classList.remove('visible');
+          onHover && onHover(false);
+        }
+      });
+      svg.addEventListener("click", function (evt) {
+        const rect = svg.getBoundingClientRect();
+        const x = ((evt.clientX - rect.left) / rect.width) * 2 - 1;
+        const y = ((evt.clientY - rect.top) / rect.height) * 2 - 1;
+        const r = Math.sqrt(x * x + y * y);
+        if (r <= RQ && r >= RP) {
+          onLock && onLock();
+        }
+      });
+    }
+    svg.appendChild(hit);
+
+  } else {
+    if (!locked && !circlesCoincide) {
+      let over = false;
+      let outer = document.createElementNS(svgNS, "circle");
+      outer.setAttribute("cx", 0); outer.setAttribute("cy", 0); outer.setAttribute("r", RQ);
+      outer.setAttribute("fill", "#fff");
+      outer.setAttribute("opacity", "0.01");
+      outer.style.cursor = "pointer";
+      outer.addEventListener("mouseenter", function () {
+        over = true;
+        onHover && onHover(true);
+      });
+      outer.addEventListener("mouseleave", function () {
+        over = false;
+        onHover && onHover(false);
+      });
+      outer.addEventListener("click", function () {
+        onLock && onLock();
+      });
+      svg.appendChild(outer);
+    }
+  }
+  wrap.appendChild(svg);
+  if (locked) wrap.classList.add('locked'); else wrap.classList.remove('locked');
+}
+
+function showHoverBox(onHover){
+  const topic = DATA[state.topicIdx];
+  const st = topic.statements[state.statementIdx];
+  const form = LOGIC_FORMS[state.formIdx].id;
+  const formLabel = LOGIC_FORMS[state.formIdx].label;
+  const formInfo = st.forms[form];
+  const hoverBox = document.getElementById('hoverBox');
+  if (!state.locked && (onHover || (!FAILURE_REGION[form] && state.hoverSeen))) {
+    hoverBox.classList.remove("hidden");
+    hoverBox.innerHTML =
+      `<span class="logic-form-label">${formLabel}:</span> <span class="locked-statement">${makeIfThen(st, form)}</span>` +
+      (formInfo && formInfo.failContext ? `<div class="fail-context">${formInfo.failContext}</div>` : "");
+  } else {
+    hoverBox.classList.add("hidden");
+    hoverBox.innerHTML = "";
+  }
+}
+
+function showLockedBox() {
+  const topic = DATA[state.topicIdx];
+  const st = topic.statements[state.statementIdx];
+  const form = LOGIC_FORMS[state.formIdx].id;
+  const formLabel = LOGIC_FORMS[state.formIdx].label;
+  const formInfo = st.forms[form];
+  const lockedBox = document.getElementById('lockedBox');
+  lockedBox.classList.remove("hidden");
+  lockedBox.innerHTML =
+    `<span class="logic-form-label">${formLabel}:</span> <span class="locked-statement">${makeIfThen(st, form)}</span>` +
+    (formInfo && formInfo.failContext ? `<div class="fail-context">${formInfo.failContext}</div>` : "");
+}
+
+// --- CHANGED: Just this function for larger intro Venn ---
+function buildStaticVenn(targetId){
+  const wrap=document.getElementById(targetId);
+  wrap.innerHTML = '';
+  const svgNS="http://www.w3.org/2000/svg";
+  const svg=document.createElementNS(svgNS,'svg');
+  svg.setAttribute('viewBox','-1 -1 2 2');
+  svg.setAttribute('width', 100);   // << bigger than before
+  svg.setAttribute('height', 100);  // << bigger than before
+  let RP = 0.40, RQ = 0.62;
+  let qCirc = document.createElementNS(svgNS,"circle");
+  qCirc.setAttribute("cx",0); qCirc.setAttribute("cy",0); qCirc.setAttribute("r",RQ);
+  qCirc.setAttribute("fill","none");
+  qCirc.setAttribute("stroke","#222");
+  qCirc.setAttribute("stroke-width","0.04");
+  svg.appendChild(qCirc);
+  let pCirc = document.createElementNS(svgNS,"circle");
+  pCirc.setAttribute("cx",0); pCirc.setAttribute("cy",0); pCirc.setAttribute("r",RP);
+  pCirc.setAttribute("fill","none");
+  pCirc.setAttribute("stroke","#222");
+  pCirc.setAttribute("stroke-width","0.04");
+  svg.appendChild(pCirc);
+  let textP = document.createElementNS(svgNS,"text");
+  textP.setAttribute("x", 0); textP.setAttribute("y", 0.04);
+  textP.setAttribute("fill", "#222"); textP.setAttribute("font-size", "0.18");
+  textP.setAttribute("font-weight", "700"); textP.setAttribute("text-anchor", "middle");
+  textP.textContent = "P"; svg.appendChild(textP);
+  let textQ = document.createElementNS(svgNS,"text");
+  textQ.setAttribute("x", 0); textQ.setAttribute("y", -RQ-0.08);
+  textQ.setAttribute("fill", "#222"); textQ.setAttribute("font-size", "0.13");
+  textQ.setAttribute("font-weight", "700");
+  textQ.setAttribute("text-anchor", "middle");
+  textQ.textContent = "Q"; svg.appendChild(textQ);
+  wrap.appendChild(svg);
+}
+function renderIntroVenn() { buildStaticVenn('introVenn'); }
+
+let state = {
+  topicIdx: 0, formIdx: 0, statementIdx: 0,
+  locked: false, hoverSeen: false, hoverActive: false,
+  circlesCoincide: false, selectedTruth: null, submitted: false
+};
+
+function refreshTabs(){
+  renderIntroVenn();
+  const topicTabs = document.getElementById('topicTabs');
+  topicTabs.innerHTML = '';
+  DATA.forEach((t, i) => {
+    const tab = document.createElement('div');
+    tab.className = 'tab' + (i === state.topicIdx ? ' active' : '');
+    tab.textContent = t.topic;
+    tab.onclick = ()=>{ 
+      if(state.topicIdx!==i){
+        state.topicIdx=i; state.statementIdx=0; resetAll(); refreshTabs();
+      }
+    };
+    topicTabs.appendChild(tab);
+  });
+  const logicTabs = document.getElementById('logicTabs');
+  logicTabs.innerHTML = '';
+  LOGIC_FORMS.forEach((f, i) => {
+    const tab = document.createElement('div');
+    tab.className = 'tab' + (i === state.formIdx ? ' active' : '');
+    tab.textContent = f.label;
+    tab.onclick = ()=>{ 
+      if(state.formIdx!==i){
+        state.formIdx=i; resetAll(); refreshTabs();
+      }
+    };
+    logicTabs.appendChild(tab);
+  });
+  const select = document.getElementById('statementSelect');
+  select.innerHTML = '';
+  const topic = DATA[state.topicIdx];
+  topic.statements.forEach((st, i) => {
+    const opt = document.createElement('option');
+    opt.value = i; opt.textContent = `If ${st.p}, then ${st.q}.`;
+    select.appendChild(opt);
+  });
+  select.value = state.statementIdx;
+  select.onchange = e => {
+    state.statementIdx = Number(select.value); resetAll(); refreshTabs();
+  };
+  refreshContent();
+}
+function resetAll() {
+  state.locked = false; state.hoverSeen = false; state.circlesCoincide = false; state.hoverActive = false;
+  state.selectedTruth = null; state.submitted = false;
+  document.getElementById('lockedBox').classList.add("hidden");
+  document.getElementById('hoverBox').classList.add("hidden");
+  document.getElementById('truthCheck').classList.add("hidden");
+  document.getElementById('infoCard').classList.remove("visible");
+}
+function refreshContent(){
+  const topic = DATA[state.topicIdx];
+  const st = topic.statements[state.statementIdx];
+  const form = LOGIC_FORMS[state.formIdx].id;
+  const formLabel = LOGIC_FORMS[state.formIdx].label;
+  let failRegion = FAILURE_REGION[form];
+  buildInteractiveVenn(
+    'svgDyn', failRegion, state.locked, state.hoverActive, function(onHover){
+      if(state.locked) return;
+      state.hoverActive = !!onHover;
+      if(!state.locked && !state.hoverSeen && (onHover || !failRegion)) {
+        state.hoverSeen = true;
+      }
+      showHoverBox(onHover);
+    }, function(){
+      if (!state.locked && (state.hoverSeen || state.hoverActive)) {
+        state.locked = true;
+        showLockedBox();
+        document.getElementById('hoverBox').classList.add("hidden");
+        document.getElementById('truthCheck').classList.remove("hidden");
+        updateTruthCheck();
+        document.getElementById('svgDyn').classList.add('locked');
+        setTimeout(refreshContent, 1);
+      }
+    }, state.circlesCoincide
+  );
+  if (!state.locked) {
+    document.getElementById('lockedBox').classList.add("hidden");
+    document.getElementById('truthCheck').classList.add("hidden");
+    document.getElementById('svgDyn').classList.remove('locked');
+  }
+  document.getElementById('infoCard').classList.remove("visible");
+  updateTruthCheck();
+}
+function updateTruthCheck() {
+  const radios = document.querySelectorAll('.truth-radio');
+  const submitBtn = document.querySelector('.truth-submit-btn');
+  for(const radio of radios) radio.disabled = !state.locked || state.submitted;
+  submitBtn.disabled = !state.selectedTruth || !state.locked || state.submitted;
+  if(!state.selectedTruth || !state.locked) {
+    for(const radio of radios) radio.checked = false;
+  }
+}
+document.getElementById('truthCheck').onsubmit = function(e){
+  e.preventDefault();
+  if(!state.selectedTruth) return;
+  state.submitted = true;
+  const topic = DATA[state.topicIdx];
+  const st = topic.statements[state.statementIdx];
+  const form = LOGIC_FORMS[state.formIdx].id;
+  const formLabel = LOGIC_FORMS[state.formIdx].label;
+  const formInfo = st.forms[form];
+  const actualTruth = !!(formInfo && formInfo.truth);
+  const userTruth = (state.selectedTruth === 'true');
+  const infoCard = document.getElementById('infoCard');
+  const infoFeedback = document.getElementById('infoFeedback');
+  const iffMsg = document.getElementById('iffMsg');
+  const counterMsg = document.getElementById('counterMsg');
+  const tryAgainBtn = document.getElementById('tryAgainBtn');
+  const reminderMsg = document.getElementById('reminderMsg');
+  infoCard.classList.add("visible");
+  tryAgainBtn.classList.add("hidden");
+  reminderMsg.classList.add("hidden");
+  if(userTruth === actualTruth) {
+    let statementEnglish = `${formLabel}: ${makeIfThen(st, form)}`;
+    infoFeedback.innerHTML =
+      `<div>${statementEnglish}</div>` +
+      `<span class="msg-good">The ${formLabel.toLowerCase()} is <b>${actualTruth?"TRUE":"FALSE"}</b>.</span>`;
+    iffMsg.textContent = (actualTruth && st.forms["converse"] && st.forms["converse"].truth)
+      ? makeIfAndOnlyIf(st) : "";
+    counterMsg.textContent = (!actualTruth && formInfo && formInfo.counter)
+      ? `Counterexample: ${formInfo.counter}` : "";
+
+    // Animate P=Q *with shading fade* if applicable (converse is true case only)
+    if (form === "converse" && actualTruth) {
+      let svgDiv = document.getElementById('svgDyn');
+      let svg = svgDiv.querySelector('svg');
+      let pCirc = svg.querySelectorAll('circle')[1];
+      let failG = svg.querySelector('.fail-region');
+      if (failG) {
+        failG.style.transition = "opacity 1.3s";
+        failG.style.opacity = "1";
+        setTimeout(()=>{failG.style.opacity = "0";}, 0);
+      }
+      pCirc.classList.add('inner-animate');
+      pCirc.setAttribute('fill','rgba(21,101,192,0.12)');
+      setTimeout(()=>{ pCirc.setAttribute('r','0.62'); }, 40);
+      setTimeout(()=>{ pCirc.setAttribute('fill','none'); }, 1300);
+      setTimeout(()=>{ state.circlesCoincide = true; }, 1400);
+    }
+
+  } else {
+    infoFeedback.innerHTML = "";
+    iffMsg.textContent = "";
+    counterMsg.textContent = "";
+    reminderMsg.classList.remove("hidden");
+    tryAgainBtn.classList.remove("hidden");
+  }
+  updateTruthCheck();
+};
+for(const radio of document.querySelectorAll('.truth-radio')) {
+  radio.onchange = function(e){
+    state.selectedTruth = e.target.value;
+    updateTruthCheck();
+  }
+}
+document.getElementById('tryAgainBtn').onclick = function(){
+  state.submitted = false;
+  state.selectedTruth = null;
+  document.getElementById('infoCard').classList.remove("visible");
+  updateTruthCheck();
+};
+window.addEventListener('DOMContentLoaded',refreshTabs);
+</script>
+<script src="proofView.js"></script>
+
+</body>
+</html>
