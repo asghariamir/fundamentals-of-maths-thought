@@ -1,41 +1,58 @@
-name: Deploy Docusaurus to Pages
+name: Deploy Docusaurus site to GitHub Pages
 
+# Re-deploy every time main is updated
 on:
   push:
     branches: [main]
 
-permissions:                      # 👈 let the action push the site
+# Top-level permissions so the build job can push Pages
+permissions:
   contents: write
   pages: write
   id-token: write
 
 jobs:
+  # ------- 1) Build the static site ---------------------------------
   build:
     runs-on: ubuntu-latest
     steps:
+      # checkout source
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      # install Node
       - uses: actions/setup-node@v4
         with:
           node-version: 18
           cache: npm
+
+      # install deps & build Docusaurus
       - run: npm ci
       - run: npm run build          # → creates ./build
+
+      # upload the ./build folder as a Pages artifact
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: build               # 👈 what we just built
+          path: build               # <-- do NOT change
 
+  # ------- 2) Publish that artifact to Pages ------------------------
   deploy:
-    needs: build
+    needs: build                    # wait for build job
     runs-on: ubuntu-latest
-    # --- NEW: prepare the environment -------------------------------
+
+    # GitHub expects this EXACT environment stanza
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    # this job specifically needs the Pages perms
+    permissions:
+      pages: write
+      id-token: write
+
     steps:
-      - name: Setup Pages
-        uses: actions/configure-pages@v3
-      # --- deploy ----------------------------------------------------
       - name: Deploy to GitHub Pages
-        id: deploy
+        id: deployment
         uses: actions/deploy-pages@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+
