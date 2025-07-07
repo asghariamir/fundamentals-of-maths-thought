@@ -13,11 +13,12 @@
       --bg: #fafafa;
       --card: #fff;
     }
-    <div class="tabrow" id="modeTabs">
-     <div class="tab active" id="justifyTab">Justify</div>
-     <div class="tab" id="buildTab">Build-a-Proof</div>
-    </div>
-
+   
+<!-- Mode selector for the new extension -->
+<div class="tabrow" id="modeTabs">
+  <div class="tab active" id="justifyTab">Justify</div>
+  <div class="tab" id="buildTab">Build-a-Proof</div>
+</div>
 
     body { background: var(--bg); color: #222; display: flex; justify-content: center; padding: 1rem; }
     .app { max-width: 670px; width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,.08); padding: 1.4rem 1.7rem; }
@@ -657,6 +658,8 @@ document.getElementById('tryAgainBtn').onclick = function(){
 window.addEventListener('DOMContentLoaded',refreshTabs);
 </script>
 <script src="proofView.js"></script>
+ 
+
 
 </body>
 </html>
