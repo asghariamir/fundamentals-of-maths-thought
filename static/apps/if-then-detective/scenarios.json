@@ -1,0 +1,35 @@
+[
+    {
+      "id": "pythag_3_4_5",
+      "claim": "The triangle with sides 3, 4, 5 is a right triangle.",
+      "p": "triangle is right",
+      "q": "Pythagorean equation holds",
+      "justificationForm": "converse",
+      "proofHints": {
+        "preferred": { "statement": "converse", "method": "direct" },
+        "altOK":     [ { "statement": "theorem", "method": "contrapositive" } ]
+      }
+    },
+    {
+      "id": "pythag_29_29_41",
+      "claim": "The triangle with sides 29, 29, 41 is **not** a right triangle.",
+      "p": "triangle is right",
+      "q": "Pythagorean equation holds",
+      "justificationForm": "theorem",
+      "proofHints": {
+        "preferred": { "statement": "theorem", "method": "contrapositive" }
+      }
+    },
+    {
+      "id": "isosceles_example",
+      "claim": "If two angles of a triangle are equal, then the opposite sides are equal.",
+      "p": "two angles equal",
+      "q": "two opposite sides equal",
+      "justificationForm": "theorem",
+      "proofHints": {
+        "preferred": { "statement": "theorem", "method": "direct" },
+        "altOK":     [ { "statement": "converse", "method": "contrapositive" } ]
+      }
+    }
+  ]
+  
