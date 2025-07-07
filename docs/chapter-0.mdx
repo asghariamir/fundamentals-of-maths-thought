@@ -5,8 +5,10 @@ sidebar_label: "Chapter 0 — See it → Say it → Settle it"
 description: An opening primer on observation, expression, and proof.
 ---
 
-> *See it, say it, settle it.*
+import BrowserOnly from '@docusaurus/BrowserOnly';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 
+> *See it, say it, settle it.*
 ## 1 · Seeing 👀
 
 What do you **see** in each figure below?
@@ -49,8 +51,17 @@ Hence the triangle is *not* right-angled.
 
 ---
 
-<!-- interactive widget LAST -->
-<iframe
-  src={useBaseUrl('/if-then.html')}
-  style={{ width: '100%', height: '420px', border: 'none' }}
-/>
+## Interactive widget 🎮
+
+<BrowserOnly>
+  {() => {
+    const src = useBaseUrl('/if-then.html');
+    return (
+      <iframe
+        src={src}
+        style={{ width: '100%', height: '420px', border: 'none' }}
+        title="If-Then logic explorer"
+      />
+    );
+  }}
+</BrowserOnly>
