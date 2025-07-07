@@ -1,8 +1,13 @@
-name: Deploy to GitHub Pages
+name: Deploy Docusaurus to Pages
 
 on:
   push:
     branches: [main]
+
+permissions:                      # 👈 let the action push the site
+  contents: write
+  pages: write
+  id-token: write
 
 jobs:
   build:
@@ -16,21 +21,21 @@ jobs:
           node-version: 18
           cache: npm
       - run: npm ci
-      - run: npm run build
+      - run: npm run build          # → creates ./build
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: build
+          path: build               # 👈 what we just built
 
   deploy:
     needs: build
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    permissions:
-      pages: write
-      id-token: write
     runs-on: ubuntu-latest
+    # --- NEW: prepare the environment -------------------------------
     steps:
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+      # --- deploy ----------------------------------------------------
       - name: Deploy to GitHub Pages
-        id: deployment
+        id: deploy
         uses: actions/deploy-pages@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
